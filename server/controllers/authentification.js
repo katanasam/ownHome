@@ -79,7 +79,7 @@ export const login = async (request, response) => {
 
         // Delete de password
         delete user_found.password;
-        request.status(200).json({token ,user_found})
+        response.status(200).json({token ,user_found})
 
     }catch (err) {
         response.status(500).json({error: err.message})
