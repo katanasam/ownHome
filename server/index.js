@@ -10,7 +10,15 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 
+
+import { register } from "./controllers/authentification.js"
+
+import authentificationRoutes from "./routes/authentification.js"
+
+
+//------------------------------------------------------------------------------------------------------
 /* CONFIGURATION */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -26,7 +34,9 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
-// /* FILE STORAGE */
+/* FILE STORAGE */
+//------------------------------------------------------------------------------------------------------
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb){
         cb(null, "public/assets");
@@ -39,7 +49,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// /* MONGOOSE SETUP */
+/* ROUTES WITH FILES */
+//------------------------------------------------------------------------------------------------------
+
+// Enregistrement d'un utilisateur avec son image de profil
+app.post("/auth/register", upload.single("picture"), register)
+
+// ROUTES 
+app.get("/tester", (req, res ) => { res.send({ data: "le serveur est connecté"});})
+
+// authentification == auth
+app.use("/auth", authentificationRoutes)
+
+/* MONGOOSE SETUP */
+//------------------------------------------------------------------------------------------------------
 
 const PORT = process.env.PORT || 6001;
 mongoose
@@ -48,6 +71,8 @@ mongoose
         useUnifiedTopology: true
     })
     .then(() => {
-        app.listen(PORT , () => console.log(`SERVER PORT : ${PORT}`))
+        app.listen(PORT , () => console.log(`Le serveur est en ecoute sur 
+        localhost:6666/(route ?) : ${PORT}`))
     })
     .catch((error) => console.log(`${error} did not connect`))
+//------------------------------------------------------------------------------------------------------
