@@ -16,8 +16,8 @@ import { register } from "./controllers/authentification.js"
 import authentificationRoutes from "./routes/authentification.js"
 
 
-//------------------------------------------------------------------------------------------------------
 /* CONFIGURATION */
+//------------------------------------------------------------------------------------------------------
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +34,8 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
+
+
 /* FILE STORAGE */
 //------------------------------------------------------------------------------------------------------
 
@@ -49,6 +51,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
+
 /* ROUTES WITH FILES */
 //------------------------------------------------------------------------------------------------------
 
@@ -60,6 +64,8 @@ app.get("/tester", (req, res ) => { res.send({ data: "le serveur est connecté"}
 
 // authentification == auth
 app.use("/auth", authentificationRoutes)
+
+
 
 /* MONGOOSE SETUP */
 //------------------------------------------------------------------------------------------------------
@@ -75,4 +81,5 @@ mongoose
         localhost:6666/(route ?) : ${PORT}`))
     })
     .catch((error) => console.log(`${error} did not connect`))
+
 //------------------------------------------------------------------------------------------------------
