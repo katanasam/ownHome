@@ -31,14 +31,14 @@ export const getUserFriends = async(request, response) => {
         const {id} = request.params
         const user_found = await User.findById(id)
 
-        const friends = await Promise.all(
+        const friends_list = await Promise.all(
             user_found.friends.map((id) => User.findById(id))
         )
         
         // controle de la variable friends
-        console.log(friends,"friends var -->")
+        console.log(friends_list,"friends var -->")
         
-        const formattedFriends = friends.map(
+        const formattedFriends = friends_list.map(
             ({ _id, firstName, lastName, occupation, location, picturePath}) => {
                 return { _id, firstName, lastName, occupation, location, picturePath}
             })
@@ -76,10 +76,31 @@ export const addRemoveFriend = async(request, response) => {
             // je peux prendre la variable (id) ou (user_found.id) car c'est le même valeur
             friend_found.friends = friend_found.friends.filter((id) => id !== user_found.id )
 
+        }else {
+            
+            user_found.friends.push(friendId)
+            friend_found.friends.push(id)
         }
 
+        // La sauvegarde se fait dans les 2 cas
+            await user_found.save()
+            await friend_found.save()
 
+            const friends_list = await Promise.all(
+                user_found.friends.map((id) => User.findById(id))
+            )
+            
+            // controle de la variable friends
+            console.log(friends_list,"friends_list var -->")
+            
+            const formattedFriends = friends_list.map(
+                ({ _id, firstName, lastName, occupation, location, picturePath}) => {
+                    return { _id, firstName, lastName, occupation, location, picturePath}
+                })
+            
+                response.status(200).json(formattedFriends)
 
+            
 
     } catch(err) {
         response.status(500).json({sms: err.message}, "controller -> users --> addRemoveFriend fonction ")
