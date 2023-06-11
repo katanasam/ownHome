@@ -38,8 +38,8 @@ export const register = async (request, response) => {
             friends,
             location,
             occupation,
-            viewedProfile:33 ,
-            impressions:33,
+            viewedProfile:0,
+            impressions:0,
         })
 
         // Sauvegarde du user et envoie d'un réponse

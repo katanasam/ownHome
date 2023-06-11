@@ -37,7 +37,15 @@ const UserSchema = new mongoose.Schema(
         location: String,
         occupation: String,
         viewedProfile: Number,
-        impressions: Number
+        impressions: Number,
+        role: {
+            type: String,
+            default:"User",
+        },
+        status: {
+            type: String,
+            default:"Client",
+        },
     },
     {timestamps: true}
 

@@ -14,6 +14,7 @@ import { fileURLToPath } from "url";
 import { register } from "./controllers/authentification.js"
 
 import authentificationRoutes from "./routes/authentification.js"
+import userRoutes from "./routes/users.js"
 
 
 /* CONFIGURATION */
@@ -59,11 +60,13 @@ const upload = multer({ storage });
 // Enregistrement d'un utilisateur avec son image de profil
 app.post("/auth/register", upload.single("picture"), register)
 
-// ROUTES 
+// routes de teste 
 app.get("/tester", (req, res ) => { res.send({ data: "le serveur est connecté"});})
 
 // authentification == auth
 app.use("/auth", authentificationRoutes)
+// user routes
+app.use("/users", userRoutes)
 
 
 
