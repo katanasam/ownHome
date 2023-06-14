@@ -11,10 +11,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 
+import { verifyToken } from "./middlewares/authentification.js";
 import { register } from "./controllers/authentification.js"
+import { createPost } from "./controllers/posts.js"
 
 import authentificationRoutes from "./routes/authentification.js"
 import userRoutes from "./routes/users.js"
+import postRoutes from "./routes/posts.js"
+
 
 
 /* CONFIGURATION */
@@ -58,16 +62,22 @@ const upload = multer({ storage });
 //------------------------------------------------------------------------------------------------------
 
 // Enregistrement d'un utilisateur avec son image de profil
+// picture et le non de la variable qui contient le file
 app.post("/auth/register", upload.single("picture"), register)
+// Création d'un post avec une image
+app.post("/posts", verifyToken ,upload.single("picture"), createPost)
 
 // routes de teste 
 app.get("/tester", (req, res ) => { res.send({ data: "le serveur est connecté"});})
 
 // authentification == auth
 app.use("/auth", authentificationRoutes)
+
 // user routes
 app.use("/users", userRoutes)
 
+// post routes
+app.use("/posts", postRoutes)
 
 
 /* MONGOOSE SETUP */
