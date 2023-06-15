@@ -1,7 +1,7 @@
 import express   from "express";
-import { getAllPosts, getUserPosts, likePost, deletePost } from "../controllers/posts.js"
+import { getAllPosts, getUserPosts, likePost, deletePost } from "../controllers/posts_Controller.js"
 
-import {verifyToken} from "../middlewares/authentification.js"
+import {verifyToken} from "../middlewares/authentification_Midware.js"
 
 const router = express.Router()
 

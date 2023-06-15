@@ -11,13 +11,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 
-import { verifyToken } from "./middlewares/authentification.js";
-import { register } from "./controllers/authentification.js"
-import { createPost } from "./controllers/posts.js"
+import { verifyToken } from "./middlewares/authentification_Midware.js";
+import { register } from "./controllers/authentification_Controller.js"
+import { createPost } from "./controllers/posts_Controller.js"
 
-import authentificationRoutes from "./routes/authentification.js"
-import userRoutes from "./routes/users.js"
-import postRoutes from "./routes/posts.js"
+import authentificationRoutes from "./routes/authentification_Route.js"
+import userRoutes from "./routes/users_Route.js"
+import postRoutes from "./routes/posts_Route.js"
 
 
 

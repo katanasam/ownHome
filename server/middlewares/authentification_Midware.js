@@ -22,8 +22,10 @@ export const verifyToken = async (request , response, next) => {
 
 
         const verifyToken = jwt.verify(token,process.env.JWT_SECRET)
-
         request.user = verifyToken ;
+
+        console.log(request.user)
+
         // Ensuite il fera appèle à une autre fonction
         next()
 
