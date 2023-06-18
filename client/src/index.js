@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
@@ -25,13 +25,13 @@ import {
 import storage from "redux-persist/lib/storage"
 import { PersistGate } from 'redux-persist/integration/react';
 
-const persistConfig = {key: root, storage, version:1};
+const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware({
-      serializableCheck: {
+      getDefaultMiddleware({
+        serializableCheck: {
         ignoreActions: [ FLUSH,REHYDRATE,PAUSE,PERSIST, PURGE,REGISTER]
       },
 
@@ -39,18 +39,15 @@ const store = configureStore({
 });
 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+
+ReactDOM.render(
   <React.StrictMode>
-
     <Provider store={store}>
-
       <PersistGate loading={null} persistor={persistStore(store)}>
         <App />
       </PersistGate>
-
     </Provider>
-    
-  </React.StrictMode>
+  </React.StrictMode>,
+  
+  document.getElementById('root')
 );
-
