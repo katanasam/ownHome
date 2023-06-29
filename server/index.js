@@ -11,13 +11,18 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 
-import { register } from "./controllers/authentification.js"
+import { verifyToken } from "./middlewares/authentification_Midware.js";
+import { register } from "./controllers/authentification_Controller.js"
+import { createPost } from "./controllers/posts_Controller.js"
 
-import authentificationRoutes from "./routes/authentification.js"
+import authentificationRoutes from "./routes/authentification_Route.js"
+import userRoutes from "./routes/users_Route.js"
+import postRoutes from "./routes/posts_Route.js"
 
 
-//------------------------------------------------------------------------------------------------------
+
 /* CONFIGURATION */
+//------------------------------------------------------------------------------------------------------
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +39,8 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
+
+
 /* FILE STORAGE */
 //------------------------------------------------------------------------------------------------------
 
@@ -49,17 +56,29 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
+
 /* ROUTES WITH FILES */
 //------------------------------------------------------------------------------------------------------
 
 // Enregistrement d'un utilisateur avec son image de profil
+// picture et le non de la variable qui contient le file
 app.post("/auth/register", upload.single("picture"), register)
+// Création d'un post avec une image
+app.post("/posts", verifyToken ,upload.single("picture"), createPost)
 
-// ROUTES 
+// routes de teste 
 app.get("/tester", (req, res ) => { res.send({ data: "le serveur est connecté"});})
 
 // authentification == auth
 app.use("/auth", authentificationRoutes)
+
+// user routes
+app.use("/users", userRoutes)
+
+// post routes
+app.use("/posts", postRoutes)
+
 
 /* MONGOOSE SETUP */
 //------------------------------------------------------------------------------------------------------
@@ -75,4 +94,5 @@ mongoose
         localhost:6666/(route ?) : ${PORT}`))
     })
     .catch((error) => console.log(`${error} did not connect`))
+
 //------------------------------------------------------------------------------------------------------

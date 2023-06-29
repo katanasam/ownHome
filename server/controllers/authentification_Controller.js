@@ -38,8 +38,8 @@ export const register = async (request, response) => {
             friends,
             location,
             occupation,
-            viewedProfile:33 ,
-            impressions:33,
+            viewedProfile:0,
+            impressions:0,
         })
 
         // Sauvegarde du user et envoie d'un réponse
@@ -75,11 +75,11 @@ export const login = async (request, response) => {
         if (!isMatch) return response.status(400).json({sms: "login fonction -> Le mot de pass de correspond pas !"})
 
         // Si tout est ok ON ENVOIE UN TOKEN DE CONNEXION
-        const token = jwt.sign({ id: user_found._id }, process.env.JWT_SECRET)
+        const token = jwt.sign({ id: user_found._id, email: user_found }, process.env.JWT_SECRET)
 
         // Delete de password
         delete user_found.password;
-        request.status(200).json({token ,user_found})
+        response.status(200).json({token,user_found})
 
     }catch (err) {
         response.status(500).json({error: err.message})
